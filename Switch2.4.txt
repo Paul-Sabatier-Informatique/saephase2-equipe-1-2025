@@ -1,0 +1,28 @@
+conf t
+hostname Switch2.4
+
+vlan 10
+ name ActiveMembers
+vlan 20
+ name RegularMembers
+
+interface fa0/1
+ description Link to Router2.2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+ no shutdown
+
+interface range fa0/3 - 15
+ description PC ActiveMember
+ switchport mode access
+ switchport access vlan 10
+ no shutdown
+
+interface range fa0/16 - 48
+ description PC RegularMember
+ switchport mode access
+ switchport access vlan 20
+ no shutdown
+ end
+wr

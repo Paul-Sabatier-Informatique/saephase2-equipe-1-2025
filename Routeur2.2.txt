@@ -1,0 +1,32 @@
+conf t
+hostname Router2.2
+
+interface g0/0/0
+ no shutdown
+
+interface g0/0/0.10
+ encapsulation dot1Q 10
+ description VLAN10 - Active Members
+ ip address 192.168.3.1 255.255.255.224
+ ip helper-address 192.168.0.2
+ no shutdown
+
+interface g0/0/0.20
+ encapsulation dot1Q 20
+ description VLAN20 - Regular Members
+ ip address 192.168.4.1 255.255.255.192
+ ip helper-address 192.168.0.2
+ no shutdown
+
+interface g0/0/1
+ description WAN link to Router2.4
+ ip address 2.0.0.1 255.255.255.252
+ no shutdown
+
+router ospf 1
+ router-id 2.2.2.2
+ network 192.168.3.0 0.0.0.31 area 1
+ network 192.168.4.0 0.0.0.63 area 1
+ network 2.0.0.0 0.0.0.3 area 0
+ end
+wr

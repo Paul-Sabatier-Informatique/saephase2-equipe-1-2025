@@ -1,0 +1,22 @@
+enable
+conf t
+hostname Switch2.2
+
+vlan 10
+ name ActiveMembers
+vlan 20
+ name RegularMembers
+
+interface range fa0/1 - 2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+ no shutdown
+
+interface range fa0/3 - 48
+ description User ports - RegularMembers
+ switchport mode access
+ switchport access vlan 20
+ no shutdown
+ end
+wr

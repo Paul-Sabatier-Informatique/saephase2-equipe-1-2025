@@ -1,0 +1,26 @@
+enable
+conf t
+hostname Routeur2.4
+
+interface g0/0
+ description Link to Routeur2.3 (PE2 <-> PE1)
+ ip address 3.0.0.2 255.255.255.252
+ no shutdown
+
+interface g0/1
+ description Link to Routeur2.5 (P router)
+ ip address 4.0.0.1 255.255.255.252
+ no shutdown
+
+interface g0/2
+ description Link to Routeur2.2 (Site 1)
+ ip address 2.0.0.2 255.255.255.252
+ no shutdown
+
+router ospf 1
+ router-id 4.4.4.4
+ network 2.0.0.0 0.0.0.3 area 0
+ network 3.0.0.0 0.0.0.3 area 0
+ network 4.0.0.0 0.0.0.3 area 0
+end
+wr
