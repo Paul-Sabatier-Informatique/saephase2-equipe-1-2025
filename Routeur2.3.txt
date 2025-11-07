@@ -1,20 +1,27 @@
 enable
 conf t
 hostname Routeur2.3
+ipv6 unicast-routing
 
 interface g0/0
  description Link to Routeur2.4 (PE1 <-> PE2)
  ip address 3.0.0.1 255.255.255.252
+ ipv6 address 2001:DB8:100:105::1/64
+ ipv6 ospf 1 area 0
  no shutdown
 
 interface g0/1
  description Link to Routeur2.1 (Main Site)
  ip address 1.0.0.2 255.255.255.252
+ ipv6 address 2001:DB8:100:101::2/64
+ ipv6 ospf 1 area 0
  no shutdown
 
 interface g0/2
  description Link to Routeur2.5 (P router)
  ip address 5.0.0.2 255.255.255.252
+ ipv6 address 2001:DB8:100:103::1/64
+ ipv6 ospf 1 area 0
  no shutdown
 
 router ospf 1

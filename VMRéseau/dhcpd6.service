@@ -1,0 +1,12 @@
+[Unit]
+Description=ISC DHCPv6 Server
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/dhcpd -6 -cf /etc/dhcp/dhcpd6.conf -lf /var/lib/dhcp/dhcpd6.leases ens19
+ExecReload=/bin/kill -HUP $MAINPID
+PIDFile=/var/run/dhcpd6.pid
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

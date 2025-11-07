@@ -1,6 +1,7 @@
 conf t
 hostname Router2.1
 ipv6 unicast-routing
+
 interface g0/0/0
  no shutdown
 
@@ -17,6 +18,8 @@ interface g0/0/0.20
  description VLAN20 - Regular Members
  ip address 192.168.2.1 255.255.255.128
  ipv6 address 2001:DB8:100:2::1/64
+
+
  ip helper-address 192.168.0.2
  no shutdown
 
@@ -45,3 +48,4 @@ router ospf 1
  network 192.168.2.0 0.0.0.127 area 0
  network 1.0.0.0 0.0.0.3 area 0
  network 20.0.0.0 0.0.0.3 area 0
+
