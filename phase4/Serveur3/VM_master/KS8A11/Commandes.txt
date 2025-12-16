@@ -1,4 +1,5 @@
 su -
+apt update
 systemctl stop NetworkManager
 systemctl disable NetworkManager
 systemctl stop networking
