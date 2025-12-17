@@ -22,3 +22,4 @@ switchport access vlan 20
 no shut
 exit
 end
+wr

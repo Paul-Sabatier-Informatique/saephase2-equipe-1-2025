@@ -1,16 +1,21 @@
 enable
 conf t
 hostname Router2.2
+ipv6 unicast-routing
 interface G0/0/0
 no shutdown
 interface G0/0/0.10
 encapsulation dot1Q 10
 ip address 192.168.1.1 255.255.255.224
+ipv6 address 2001:db8:2:102::1/64
 interface G0/0/0.20
 encapsulation dot1Q 20
 ip address 192.168.2.1 255.255.255.128
+ipv6 address 2001:db8:2:103::1/64
 interface G0/0/1
 ip address 192.168.0.161 255.255.255.224
+ipv6 address 2001:db8:2:104::1/64
 no shutdown
 exit
 end
+wr
