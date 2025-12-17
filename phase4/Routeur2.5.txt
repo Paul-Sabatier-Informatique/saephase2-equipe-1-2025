@@ -6,6 +6,10 @@ interface Loopback0
 ip address 6.6.6.6 255.255.255.255
 no shutdown
 
+interface GigabitEthernet0/0
+ip address 172.16.100.25 255.255.255.252
+no shutdown
+
 interface GigabitEthernet0/1
 ip address 172.16.100.5 255.255.255.252
 
@@ -15,5 +19,5 @@ ip address 172.16.100.9 255.255.255.252
 router ospf 2
 router-id 6.6.6.6
 network 6.6.6.6 0.0.0.0 area 0
-network 172.16.100.4 0.0.0.3 area 2
-network 172.16.100.8 0.0.0.3 area 2
+network 172.16.100.4 0.0.0.3 area 0
+network 172.16.100.8 0.0.0.3 area 0
