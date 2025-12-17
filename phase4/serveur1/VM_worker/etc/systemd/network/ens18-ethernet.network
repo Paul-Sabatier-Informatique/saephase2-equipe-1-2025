@@ -1,0 +1,5 @@
+ [Match]
+Name=ens18
+[Network]
+DHCP=true
+

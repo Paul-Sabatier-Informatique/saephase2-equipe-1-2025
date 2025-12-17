@@ -1,0 +1,21 @@
+enable
+conf t
+hostname R2.4
+
+interface Loopback0
+ip address 6.6.6.6 255.255.255.255
+no shutdown
+
+interface GigabitEthernet0/1
+ip address 172.16.100.14 255.255.255.252
+no shutdown
+
+interface GigabitEthernet0/2
+ip address 172.16.100.10 255.255.255.252
+no shutdown
+
+router ospf 2
+router-id 5.5.5.5
+network 5.5.5.5 0.0.0.0 area 0
+network 172.16.100.4 0.0.0.3 area 0
+network 172.16.100.12 0.0.0.3 area 0
