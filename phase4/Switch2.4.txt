@@ -12,7 +12,7 @@ switchport mode trunk
 switchport trunk allowed vlan 10,20
 no shutdown
 exit
-interface range Fa/1 - 8
+interface range Fa0/1 - 8
 switchport mode access
 switchport access vlan 10
 no shut
