@@ -1,0 +1,16 @@
+enable
+conf t
+hostname Router2.2
+interface G0/0/0
+no shutdown
+interface G0/0/0.10
+encapsulation dot1Q 10
+ip address 192.168.1.1 255.255.255.224
+interface G0/0/0.20
+encapsulation dot1Q 20
+ip address 192.168.2.1 255.255.255.128
+interface G0/0/1
+ip address 192.168.0.161 255.255.255.224
+no shutdown
+exit
+end
