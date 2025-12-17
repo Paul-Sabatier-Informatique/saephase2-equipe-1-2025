@@ -1,0 +1,25 @@
+enable
+conf t
+hostname Switch2.4
+vlan 10
+name Vlan10
+vlan 20
+name Vlan20
+exit
+interface F0/48
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10,20
+no shutdown
+exit
+interface range Fa/1 - 8
+switchport mode access
+switchport access vlan 10
+no shut
+interface range Fa0/9 - 45
+switchport mode access
+switchport access vlan 20
+no shut
+exit
+end
+wr
