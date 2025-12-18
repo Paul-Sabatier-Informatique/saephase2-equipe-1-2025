@@ -6,7 +6,7 @@ name Vlan10
 vlan 20
 name Vlan20
 exit
-interface F0/47 - 48
+interface range F0/47 - 48
 switchport trunk encapsulation dot1q
 switchport mode trunk
 switchport trunk allowed vlan 10,20
