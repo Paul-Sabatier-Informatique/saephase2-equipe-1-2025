@@ -1,0 +1,30 @@
+enable
+conf t
+hostname S2.2
+
+vlan 10
+name Membres
+vlan 20
+name Adherents
+
+interface FastEthernet0/48
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan add 10,20
+no shutdown
+
+
+interface range FastEthernet0/1 - 17
+description PC Membres
+switchport mode access
+switchport access vlan 10
+no shutdown
+
+interface range FastEthernet0/18 - 47
+description PC Adherents
+switchport mode access
+switchport access vlan 20
+no shutdown
+
+end
+wr
