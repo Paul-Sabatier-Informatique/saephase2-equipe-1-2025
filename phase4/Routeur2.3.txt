@@ -1,0 +1,19 @@
+enable
+conf t
+hostname R2.3
+ipv6 unicast-routing
+interface G0/0
+ip address 172.16.100.30 255.255.255.252
+ipv6 address 2001:db8:2:ff09::2/127
+no shutdown
+interface G0/1
+ip address 192.168.0.1 255.255.255.224
+ipv6 address 2001:db8:2:101::1/64
+no shutdown
+interface G0/2
+ip address 10.0.0.2 255.255.255.252
+ipv6 address 2001:db8:abcd:1::1/127
+no shutdown
+exit
+end
+wr
