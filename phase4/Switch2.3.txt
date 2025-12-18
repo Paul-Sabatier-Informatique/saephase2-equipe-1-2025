@@ -2,17 +2,22 @@ enable
 conf t
 hostname S2.3
 
+vlan 30
+name resaeausiteprincipal
+
 interface FastEthernet0/46
-switchport trunk encapsulation dot1q
-switchport mode trunk
+switchport mode access
+switchport mode access vlan 30
 no shutdown
 
 interface FastEthernet0/47
 switchport trunk encapsulation dot1q
 switchport mode trunk
+switchport trunk allowed vlan add 30
 no shutdown
 
 interface FastEthernet0/48
 switchport trunk encapsulation dot1q
 switchport mode trunk
+switchport trunk allowed vlan add 30
 no shutdown
