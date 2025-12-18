@@ -26,9 +26,11 @@ encapsulation dot1Q 20
 description VLAN20 - Regular Members
 ip address 192.168.2.1 255.255.255.192
 ipv6 address 2001:db8:2:112::1/64
+no shutdown
 
 interface GigabitEthernet0/0/1.30
 encapsulation dot1Q 30
 description VLAN30 - VMs
 ip address 192.168.3.1 255.255.255.248
 ipv6 address 2001:db8:2:113::1/64
+no shutdown
