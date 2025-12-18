@@ -1,0 +1,17 @@
+enable
+conf t
+hostname S2.3
+
+interface FastEthernet0/46
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no shutdown
+
+interface FastEthernet0/47
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no shutdown
+
+interface FastEthernet0/48
+switchport trunk encapsulation dot1q
+switchport mode trunk
