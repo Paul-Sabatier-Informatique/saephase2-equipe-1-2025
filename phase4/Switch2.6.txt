@@ -1,6 +1,6 @@
 enable
 conf t
-hostname Switch2.5
+hostname Switch2.6
 vlan 10
 name Vlan10
 vlan 20
