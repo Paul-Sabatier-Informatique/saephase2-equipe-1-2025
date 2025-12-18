@@ -2,20 +2,27 @@ enable
 conf t
 hostname Router2.2
 ipv6 unicast-routing
+
 interface G0/0/0
 no shutdown
+
 interface G0/0/0.10
 encapsulation dot1Q 10
 ip address 192.168.1.1 255.255.255.224
 ipv6 address 2001:db8:2:102::1/64
+
 interface G0/0/0.20
 encapsulation dot1Q 20
 ip address 192.168.2.1 255.255.255.128
 ipv6 address 2001:db8:2:103::1/64
-interface G0/0/1
+
+interface GigabitEthernet0/0/1.30
+description VLAN30 - connexion au serveur et a R2.3
+encapsulation dot1Q 30
 ip address 192.168.0.2 255.255.255.224
-ipv6 address 2001:db8:2:101::2/64
+ipv6 address 2001:DB8:2:101::2/64
 no shutdown
+
 exit
 end
 wr
