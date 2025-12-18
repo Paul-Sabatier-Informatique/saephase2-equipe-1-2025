@@ -7,10 +7,12 @@ no shutdown
 interface G0/0/0.10
 encapsulation dot1Q 10
 ip address 192.168.1.1 255.255.255.224
+ip helper-address 192.168.0.3
 ipv6 address 2001:db8:2:102::1/64
 interface G0/0/0.20
 encapsulation dot1Q 20
 ip address 192.168.2.1 255.255.255.128
+ip helper-address 192.168.0.3
 ipv6 address 2001:db8:2:103::1/64
 interface G0/0/1
 ip address 192.168.0.2 255.255.255.224
