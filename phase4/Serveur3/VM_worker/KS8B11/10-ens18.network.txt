@@ -1,0 +1,6 @@
+[Match]
+Name=ens18
+
+[Network]
+DHCP=yes
+DNS=8.8.8.8

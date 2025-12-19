@@ -4,8 +4,8 @@ Name=ens19
 [Network]
 DHCP=no
 IPv6AcceptRA=no
-Address=192.168.5.2/29
-Address=2001:DB8:2:113::2/64
+Address=192.168.5.3/29
+Address=2001:DB8:2:113::3/64
 
 [Route]
 Destination=172.16.100.26/30
