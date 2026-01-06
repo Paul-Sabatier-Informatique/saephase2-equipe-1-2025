@@ -3,7 +3,8 @@ Name=ens19
 
 [Network]
 DHCP=false
-Address=198.168.0.198/24
+Address=198.168.0.10/24
+Address=2001:db8:2:101::5/64
 
 #[Route]
 #Destination=192.168.1.0/27
