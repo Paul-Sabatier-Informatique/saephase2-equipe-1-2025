@@ -1,5 +1,5 @@
- [Match]
+[Match]
 Name=ens19
 [Network]
 DHCP=false
-Address=192.168.1.100/24
+Address=192.168.1.4/27
