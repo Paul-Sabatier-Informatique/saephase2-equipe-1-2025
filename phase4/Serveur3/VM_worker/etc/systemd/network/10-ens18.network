@@ -1,4 +1,5 @@
 [Match]
 Name=ens18
 [Network]
-DHCP=true
+DHCP=yes
+DNS=8.8.8.8
