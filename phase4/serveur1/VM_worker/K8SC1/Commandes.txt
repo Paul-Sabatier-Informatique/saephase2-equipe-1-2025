@@ -1,7 +1,7 @@
 su -
 apt update
 apt upgrade
-hostnamectl set-hostname k8sa1
+hostnamectl set-hostname k8sc1
 systemctl stop NetworkManager
 systemctl disable NetworkManager
 systemctl stop networking
@@ -12,9 +12,4 @@ nano /etc/systemd/network/10-ens18.network => Contenu dans un autre fichier
 nano /etc/systemd/network/20-ens19.network => Contenu dans un autre fichier
 apt install curl
 apt install iptables iptables-persistent
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip=192.168.0.10 --advertise-address=192.168.0.10 --flannel-iface=ens19" sh -
-cd /home/etu/Documents
-nano web.yaml
-kubectl apply -f web.yaml
-kubectl exec -it web-pod -- curl -I localhost
-kubectl apply -f web-svc.yaml
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.:6443 K3S_TOKEN=letoken INSTALL_K3S_EXEC="--node-ip=192.168.0.12 --flannel-iface=ens19" sh -
