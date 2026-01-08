@@ -14,7 +14,17 @@ apt install curl
 apt install iptables iptables-persistent
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip=192.168.0.10 --advertise-address=192.168.0.10 --flannel-iface=ens19" sh -
 cd /home/etu/Documents
-nano web.yaml
+nano web.yaml => Contenu dans un autre fichier
 kubectl apply -f web.yaml
 kubectl exec -it web-pod -- curl -I localhost
 kubectl apply -f web-svc.yaml
+wget https://github.com/archidote/get-ready-simple-countdown-html-css-js/archive/refs/heads/main.zip
+unzip main.zip
+cd get-ready-simple-countdown-html-css-js-main
+nano Dockerfile => Contenu dans un autre fichier
+docker build -t countdown-apache:v1 .
+docker save countdown-apache:v1 | sudo k3s ctr images import -
+nano deployment.yaml => Contenu dans un autre fichier
+nano service.yaml => Contenu dans un autre fichier
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
