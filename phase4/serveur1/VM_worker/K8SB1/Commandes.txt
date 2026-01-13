@@ -10,6 +10,9 @@ systemctl enable systemd-networkd
 systemctl start systemd-networkd
 nano /etc/systemd/network/10-ens18.network => Contenu dans un autre fichier
 nano /etc/systemd/network/20-ens19.network => Contenu dans un autre fichier
+systemctl restart systemd-networkd
 apt install curl
 apt install iptables iptables-persistent
 curl -sfL https://get.k3s.io | K3S_URL=https://192.168.:6443 K3S_TOKEN=letoken INSTALL_K3S_EXEC="--node-ip=192.168.0.11 --flannel-iface=ens19" sh -
+nano /etc/resolv.conf => Contenu dans un autre fichier
+systemctl restart systemd-networkd

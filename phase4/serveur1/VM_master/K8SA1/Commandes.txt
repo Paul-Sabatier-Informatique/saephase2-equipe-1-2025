@@ -12,6 +12,7 @@ nano /etc/systemd/network/10-ens18.network => Contenu dans un autre fichier
 nano /etc/systemd/network/20-ens19.network => Contenu dans un autre fichier
 apt install curl
 apt install iptables iptables-persistent
+systemctl restart systemd-networkd
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip=192.168.0.10 --advertise-address=192.168.0.10 --flannel-iface=ens19" sh -
 cd /home/etu/Documents
 nano web.yaml => Contenu dans un autre fichier
@@ -28,3 +29,11 @@ nano deployment.yaml => Contenu dans un autre fichier
 nano service.yaml => Contenu dans un autre fichier
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
+cd ~
+nano /etc/resolv.conf => Contenu dans un autre fichier
+systemctl restart systemd-networkd
+systemctl enable --now ssh
+ufw allow 22/tcp
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw allow enable
