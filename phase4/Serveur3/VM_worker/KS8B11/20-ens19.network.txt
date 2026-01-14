@@ -6,6 +6,8 @@ DHCP=no
 IPv6AcceptRA=no
 Address=192.168.5.3/29
 Address=2001:DB8:2:113::3/64
+DNS=192.168.0.3
+Domains=~siteequipe1
 
 [Route]
 Destination=172.16.100.26/30

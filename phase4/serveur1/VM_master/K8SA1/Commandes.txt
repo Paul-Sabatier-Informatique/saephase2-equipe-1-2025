@@ -30,10 +30,8 @@ nano service.yaml => Contenu dans un autre fichier
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 cd ~
+apt install systemd-resolved
+systemctl enable systemd-resolved
 nano /etc/resolv.conf => Contenu dans un autre fichier
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 systemctl restart systemd-networkd
-systemctl enable --now ssh
-ufw allow 22/tcp
-ufw allow 80/tcp
-ufw allow 443/tcp
-ufw allow enable
