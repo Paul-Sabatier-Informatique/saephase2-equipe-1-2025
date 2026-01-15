@@ -10,5 +10,12 @@ systemctl stop networking
 systemctl disable networking
 systemctl enable systemd-networkd
 systemctl start systemd-networkd
+
 nano /etc/systemd/network/10-ens18.network => Contenu dans un autre fichier
 nano /etc/systemd/network/20-ens19.network => Contenu dans un autre fichier
+
+systemctl restart systemd-networkd
+
+curl -sfL https://get.k3s.io | K3S_EXEC="--flannel-iface=ens19 --node-ip=192.168.5.2 --advertise-address=192.168.5.2" sh -
+cat /var/lib/rancher/k3s/server/node-token
+
