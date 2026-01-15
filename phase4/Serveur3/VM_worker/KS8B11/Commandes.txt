@@ -1,1 +1,19 @@
+su -
 apt update
+apt upgrade
+
+apt install -y ufw traceroute nmap openssh-server fish systemd-resolved docker docker-compose 
+
+systemctl stop NetworkManager
+systemctl disable NetworkManager
+systemctl stop networking
+systemctl disable networking
+systemctl enable systemd-networkd
+systemctl start systemd-networkd
+
+nano /etc/systemd/network/10-ens18.network => Contenu dans un autre fichier
+nano /etc/systemd/network/20-ens19.network => Contenu dans un autre fichier
+
+systemctl restart systemd-networkd
+
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.5.2:6443 K3S_TOKEN="K1063ee137af09d72b91ce21650cb4ec04c15c6c01158fe9b8a7eacaf9106f952e1::server:6780a95feb7f7c33649d5431ce081386" INSTALL_K3S_EXEC="--node-ip=192.168.5.3 --flannel-iface=ens19" sh -
