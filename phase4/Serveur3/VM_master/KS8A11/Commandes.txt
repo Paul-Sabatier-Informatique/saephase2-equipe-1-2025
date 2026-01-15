@@ -1,6 +1,9 @@
 su -
 apt update
 apt upgrade
+
+apt install -y ufw traceroute nmap openssh-server fish systemd-resolved docker docker-compose 
+
 systemctl stop NetworkManager
 systemctl disable NetworkManager
 systemctl stop networking

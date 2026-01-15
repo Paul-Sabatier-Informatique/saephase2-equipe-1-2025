@@ -2,4 +2,7 @@
 Name=ens18
 [Network]
 DHCP=yes
-DNS=8.8.8.8
+Address=100.100.100.24/24
+DNS=100.100.100.254
+Gateway=100.100.100.254
+Domains=~.
