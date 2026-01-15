@@ -1,0 +1,10 @@
+[Match]
+Name=ens18
+
+[Network]
+DHCP=no
+Address=100.100.100.25/24
+DNS=100.100.100.254
+Gateway=100.100.100.254
+ClientIdentifier=mac
+Domains=~
