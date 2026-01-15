@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: countdown-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: countdown
+  template:
+    metadata:
+      labels:
+        app: countdown
+    spec:
+      containers:
+      - name: countdown
+        image: countdown-apache:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
