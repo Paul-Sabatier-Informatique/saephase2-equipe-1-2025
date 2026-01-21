@@ -19,3 +19,24 @@ systemctl restart systemd-networkd
 curl -sfL https://get.k3s.io | K3S_EXEC="--flannel-iface=ens19 --node-ip=192.168.5.2 --advertise-address=192.168.5.2" sh -
 cat /var/lib/rancher/k3s/server/node-token
 
+cd /home/etu/Documents
+nano web.yaml => Contenu dans un autre fichier
+kubectl apply -f web.yaml
+kubectl exec -it web-pod -- curl -I localhost
+kubectl apply -f web-svc.yaml
+wget https://github.com/archidote/get-ready-simple-countdown-html-css-js/archive/refs/heads/main.zip
+unzip main.zip
+cd get-ready-simple-countdown-html-css-js-main
+nano Dockerfile => Contenu dans un autre fichier
+docker build -t countdown-apache:v1 .
+docker save countdown-apache:v1 | sudo k3s ctr images import -
+nano deployment.yaml => Contenu dans un autre fichier
+nano service.yaml => Contenu dans un autre fichier
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+cd ~
+apt install systemd-resolved
+systemctl enable systemd-resolved
+nano /etc/resolv.conf => Contenu dans un autre fichier
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+systemctl restart systemd-networkd
