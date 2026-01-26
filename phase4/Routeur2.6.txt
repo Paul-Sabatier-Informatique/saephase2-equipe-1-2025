@@ -1,30 +1,193 @@
-enable
-conf t
+R2.6#s run
+Building configuration...
 
+Current configuration : 3278 bytes
+!
+version 15.7
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
 hostname R2.6
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+!
+!
+!
+!
 
+
+!
+!
+!
+!
+ip cef
 ipv6 unicast-routing
-
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!         
+!
+license udi pid CISCO2911/K9 sn FCZ175070H7
+license boot module c2900 technology-package datak9
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+! 
+!
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key VPN123 address 10.0.0.2       
+!
+!
+crypto ipsec transform-set TS esp-aes esp-sha-hmac 
+ mode tunnel
+!
+!
+!
+crypto map VPN-MAP 10 ipsec-isakmp 
+ set peer 10.0.0.2
+ set transform-set TS 
+ match address 100
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
 interface GigabitEthernet0/0
-ip address 10.0.0.1 255.255.255.252
-ipv6 address 2001:db8:abcd:1::/127
-no shutdown
-
+ ip address 10.0.0.1 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+ duplex auto
+ speed auto
+ ipv6 address 2001:DB8:ABCD:1::/127
+ crypto map VPN-MAP
+!
 interface GigabitEthernet0/1
-no shutdown
-
+ no ip address
+ ip nat inside
+ ip virtual-reassembly in
+ duplex auto
+ speed auto
+!
 interface GigabitEthernet0/1.10
-encapsulation dot1Q 10
-description VLAN10 - Active Members
-ip address 192.168.1.1 255.255.255.224
-ipv6 address 2001:db8:2:121::1/64
-no shutdown
-
+ description VLAN10 - Active Members
+ encapsulation dot1Q 10
+ ip address 192.168.6.1 255.255.255.224
+ ip helper-address 192.168.0.4
+ ipv6 address 2001:DB8:2:121::1/64
+!
 interface GigabitEthernet0/1.20
-encapsulation dot1Q 20
-description VLAN20 - Regular Members
-ip address 192.168.2.1 255.255.255.224
-ipv6 address 2001:db8:2:122::1/64
-no shutdown
+ description VLAN20 - Regular Members
+ encapsulation dot1Q 20
+ ip address 192.168.7.1 255.255.255.224
+ ip helper-address 192.168.0.4
+ ipv6 address 2001:DB8:2:122::1/64
+!         
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip nat inside source list NAT-EXEMPT interface GigabitEthernet0/0 overload
+ip nat inside source static 192.168.1.0 10.0.0.10
+ip nat inside source static 192.168.2.0 10.0.0.11
+!
+ip access-list extended ACL-WAN-IN
+ permit ospf any any
+ permit ip any host 10.0.0.10
+ permit ip any host 10.0.0.11
+ deny   ip any 192.168.1.0 0.0.0.31
+ deny   ip any 192.168.2.0 0.0.0.31
+ deny   ip any any
+ permit icmp host 10.0.0.2 host 10.0.0.1
+ permit udp host 10.0.0.2 host 10.0.0.1 eq isakmp
+ permit udp host 10.0.0.2 host 10.0.0.1 eq non500-isakmp
+ permit esp host 10.0.0.2 host 10.0.0.1
+ip access-list extended NAT-EXEMPT
+ permit ip 192.168.6.0 0.0.0.31 172.30.1.0 0.0.0.31
+ permit ip 192.168.7.0 0.0.0.31 172.30.2.0 0.0.0.127
+ip access-list extended NAT-INTERNET
+ permit ip 192.168.1.0 0.0.0.31 any
+ permit ip 192.168.2.0 0.0.0.127 any
+ permit ip 192.168.6.0 0.0.0.31 any
+ permit ip 192.168.7.0 0.0.0.31 any
+ip access-list extended VPN-TRAFFIC
+ permit ip 172.30.1.0 0.0.0.31 192.168.6.0 0.0.0.31
+ permit ip 172.30.2.0 0.0.0.127 192.168.7.0 0.0.0.31
+!
+ipv6 ioam timestamp
+!
+!
+access-list 100 permit ip 172.30.1.0 0.0.0.31 192.168.0.0 0.0.0.31
+access-list 100 permit ip 172.30.2.0 0.0.0.127 192.168.0.0 0.0.0.31
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ login
+ transport input none
+!
+scheduler allocate 20000 1000
+!
 end
-wr
+
+R2.6#    
