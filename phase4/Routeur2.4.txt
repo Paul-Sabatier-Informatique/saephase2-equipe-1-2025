@@ -1,26 +1,182 @@
-enable
-conf t
+R2.4#s run
+Building configuration...
+
+Current configuration : 2442 bytes
+!
+version 15.7
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
 hostname R2.4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+!
+!
+!
+!
 
+
+!
+ip vrf EQUIPE1-VRF
+ rd 111:1
+ route-target export 111:1
+ route-target import 111:1
+!
+!
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!         
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+license udi pid CISCO2911/K9 sn FCZ175070H9
+license accept end user agreement
+license boot module c2900 technology-package datak9
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!         
+!
+!
+!
+!
+!
 interface Loopback0
-ip address 6.6.6.6 255.255.255.255
-no shutdown
-
+ ip address 5.5.5.5 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
 interface GigabitEthernet0/0
-ip address 172.16.100.29 255.255.255.252
-no shutdown
-
+ ip vrf forwarding EQUIPE1-VRF
+ ip address 172.16.100.29 255.255.255.252
+ ip ospf 20 area 0
+ duplex auto
+ speed auto
+ ipv6 address 2001:DB8:2:FF09::1/127
+ ipv6 ospf 2 area 0
+!
 interface GigabitEthernet0/1
-ip address 172.16.100.14 255.255.255.252
-no shutdown
-
+ ip address 172.16.100.14 255.255.255.252
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ ipv6 address 2001:DB8:2:FF03::2/127
+ ipv6 ospf 2 area 0
+ mpls ip
+!
 interface GigabitEthernet0/2
-ip address 172.16.100.10 255.255.255.252
-no shutdown
+ ip address 172.16.100.10 255.255.255.252
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ ipv6 address 2001:DB8:2:FF04::2/127
+ ipv6 ospf 2 area 0
+ mpls ip
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+!
+router ospf 20 vrf EQUIPE1-VRF
+ router-id 5.5.5.20
+ redistribute bgp 56 subnets
+!
+router ospf 1
+ mpls ldp autoconfig
+!
+router bgp 56
+ bgp log-neighbor-changes
+ neighbor 6.6.6.6 remote-as 56
+ neighbor 6.6.6.6 update-source Loopback0
+ !
+ address-family vpnv4
+  neighbor 6.6.6.6 activate
+  neighbor 6.6.6.6 send-community extended
+ exit-address-family
+ !
+ address-family ipv4 vrf EQUIPE1-VRF
+  redistribute connected
+  redistribute ospf 20
+  neighbor 6.6.6.20 remote-as 56
+  neighbor 6.6.6.20 activate
+  neighbor 6.6.6.20 send-community extended
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+ipv6 router ospf 2
+ router-id 5.5.5.5
+!
+ipv6 ioam timestamp
+!
+!
+mpls ldp router-id Loopback0 force
+!
+control-plane
+!         
+!
+line con 0
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ login
+ transport input none
+!
+scheduler allocate 20000 1000
+!
+end
 
-router ospf 2
-router-id 5.5.5.5
-network 5.5.5.5 0.0.0.0 area 0
-network 172.16.100.4 0.0.0.3 area 0
-network 172.16.100.12 0.0.0.3 area 0
-network 172.16.100.28 0.0.0.3 area 0
+R2.4#   
