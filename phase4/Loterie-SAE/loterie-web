@@ -1,1 +1,223 @@
+/* Fichier à mettre sur "htdocs de XAMPP */
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loterie Blockchain</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Loterie Blockchain</h1>
 
+    <div>
+        <h2>Contrats Disponibles</h2>
+        <button onclick="afficherContrats()">Afficher les Contrats</button>
+        <div id="tableauContrats"></div>
+    </div>
+
+    <div>
+        <h2>Solde de la Loterie</h2>
+        <p id="solde">Solde : </p>
+        <input type="text" id="adresseContrat" placeholder="Adresse du contrat">
+        <button onclick="afficherSolde()">Afficher le Solde</button>
+    </div>
+
+    <div>
+        <h2>Participer à la Loterie</h2>
+        <input type="text" id="montantEther" placeholder="Montant en ETH (ex: 1)">
+        <button onclick="participer()">Participer</button>
+        <p id="participationStatus"></p>
+    </div>
+
+    <div>
+        <h2>Liste des Participants</h2>
+        <button onclick="afficherParticipants()">Afficher les Participants</button>
+        <div id="tableauParticipants"></div>
+    </div>
+
+    <div>
+        <h2>Choisir un Gagnant</h2>
+        <button onclick="choisirGagnant()">Choisir le Gagnant</button>
+        <p id="gagnantStatus"></p>
+    </div>
+
+    <script>
+        // Connexion à Ganache
+        const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
+
+        // ABI du contrat
+        const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_mise",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [],
+                "name": "choisirGagnant",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getBalance",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getParticipants",
+                "outputs": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address payable",
+                                "name": "adresse",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "montant",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Loterie.Participant[]",
+                        "name": "",
+                        "type": "tuple[]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "participer",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            }
+        ];
+
+        // Fonction pour afficher les contrats disponibles
+        async function afficherContrats() {
+            try {
+                const accounts = await web3.eth.getAccounts();
+                const tableauContratsElement = document.getElementById("tableauContrats");
+                let tableauHTML = "<table><tr><th>Adresse du Contrat</th><th>Solde (ETH)</th></tr>";
+
+                // Récupérer les transactions de déploiement de contrat
+                const blockNumber = await web3.eth.getBlockNumber();
+                for (let i = 0; i <= blockNumber; i++) {
+                    const block = await web3.eth.getBlock(i, true);
+                    if (block && block.transactions) {
+                        for (const txHash of block.transactions) {
+                            const receipt = await web3.eth.getTransactionReceipt(txHash);
+                            if (receipt && receipt.contractAddress) {
+                                const contractAddress = receipt.contractAddress;
+                                const contract = new web3.eth.Contract(abi, contractAddress);
+                                try {
+                                    const balance = await contract.methods.getBalance().call();
+                                    tableauHTML += `<tr><td>${contractAddress}</td><td>${web3.utils.fromWei(balance, "ether")}</td></tr>`;
+                                } catch (error) {
+                                    // Ignorer les erreurs si le contrat n'est pas une loterie
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tableauHTML += "</table>";
+                tableauContratsElement.innerHTML = tableauHTML;
+            } catch (error) {
+                console.error("Erreur lors de la récupération des contrats :", error);
+            }
+        }
+
+        // Fonction pour afficher le solde
+        async function afficherSolde() {
+            const adresseContrat = document.getElementById("adresseContrat").value;
+            const contract = new web3.eth.Contract(abi, adresseContrat);
+            const solde = await contract.methods.getBalance().call();
+            document.getElementById("solde").innerText = "Solde : " + web3.utils.fromWei(solde, "ether") + " ETH";
+        }
+
+        // Fonction pour participer
+        async function participer() {
+            const adresseContrat = document.getElementById("adresseContrat").value;
+            const montantEther = document.getElementById("montantEther").value;
+            const contract = new web3.eth.Contract(abi, adresseContrat);
+            const accounts = await web3.eth.getAccounts();
+
+            try {
+                await contract.methods.participer().send({
+                    from: accounts[0],
+                    value: web3.utils.toWei(montantEther, "ether")
+                });
+                document.getElementById("participationStatus").innerText = "Participation réussie !";
+            } catch (error) {
+                document.getElementById("participationStatus").innerText = "Erreur : " + error.message;
+            }
+        }
+
+        // Fonction pour afficher les participants
+        async function afficherParticipants() {
+            const adresseContrat = document.getElementById("adresseContrat").value;
+            const contract = new web3.eth.Contract(abi, adresseContrat);
+            const participants = await contract.methods.getParticipants().call();
+
+            const tableauParticipantsElement = document.getElementById("tableauParticipants");
+            let tableauHTML = "<table><tr><th>Adresse</th><th>Montant (ETH)</th></tr>";
+
+            participants.forEach(participant => {
+                tableauHTML += `<tr><td>${participant.adresse}</td><td>${web3.utils.fromWei(participant.montant, "ether")}</td></tr>`;
+            });
+
+            tableauHTML += "</table>";
+            tableauParticipantsElement.innerHTML = tableauHTML;
+        }
+
+        // Fonction pour choisir un gagnant
+        async function choisirGagnant() {
+            const adresseContrat = document.getElementById("adresseContrat").value;
+            const contract = new web3.eth.Contract(abi, adresseContrat);
+            const accounts = await web3.eth.getAccounts();
+
+            try {
+                await contract.methods.choisirGagnant().send({
+                    from: accounts[0]
+                });
+                document.getElementById("gagnantStatus").innerText = "Gagnant sélectionné avec succès !";
+            } catch (error) {
+                document.getElementById("gagnantStatus").innerText = "Erreur : " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
